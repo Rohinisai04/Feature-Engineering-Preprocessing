@@ -1,0 +1,37 @@
+import math
+def calculate_mean(vector):
+    total_sum = 0.0
+    for value in vector:
+        total_sum += value
+    return total_sum / len(vector)
+
+def calculate_variance(vector, mean):
+    variance_sum = 0.0
+    for value in vector:
+        variance_sum += (value - mean) ** 2
+    return variance_sum / len(vector)
+
+def calculate_covariance(vector1, vector2, mean1, mean2):
+    covariance_sum = 0.0
+    for i in range(len(vector1)):
+        covariance_sum += (vector1[i] - mean1) * (vector2[i] - mean2)
+    return covariance_sum / len(vector1)
+
+def calculate_correlation(vector1, vector2):
+    mean1 = calculate_mean(vector1)
+    mean2 = calculate_mean(vector2)
+    
+    covariance = calculate_covariance(vector1, vector2, mean1, mean2)
+    
+    variance1 = calculate_variance(vector1, mean1)
+    variance2 = calculate_variance(vector2, mean2)
+    
+    correlation = covariance / math.sqrt(variance1 * variance2)
+    return correlation
+
+vector1 = [2.0, 4.0, 6.0, 8.0, 10.0]
+vector2 = [1.0, 3.0, 5.0, 7.0, 9.0]
+
+correlation = calculate_correlation(vector1, vector2)
+
+print(f"Correlation: {correlation}")
