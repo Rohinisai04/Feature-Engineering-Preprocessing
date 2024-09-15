@@ -1,0 +1,70 @@
+import math
+def calculate_mean(vector):
+    total_sum = 0.0
+    for value in vector:
+        total_sum += value
+    return total_sum / len(vector)
+
+def calculate_variance(vector, mean):
+    variance_sum = 0.0
+    for value in vector:
+        variance_sum += (value - mean) ** 2
+    return variance_sum / len(vector)
+
+def calculate_covariance(vector1, vector2, mean1, mean2):
+    covariance_sum = 0.0
+    for i in range(len(vector1)):
+        covariance_sum += (vector1[i] - mean1) * (vector2[i] - mean2)
+    return covariance_sum / len(vector1)
+
+def calculate_covariance_matrix(matrix):
+    num_features = len(matrix)
+    covariance_matrix = []
+    
+    for i in range(num_features):
+        row = []
+        mean_i = calculate_mean(matrix[i])
+        for j in range(num_features):
+            mean_j = calculate_mean(matrix[j])
+            covariance = calculate_covariance(matrix[i], matrix[j], mean_i, mean_j)
+            row.append(covariance)
+        covariance_matrix.append(row)
+    
+    return covariance_matrix
+
+def calculate_correlation_matrix(matrix):
+    num_features = len(matrix)
+    correlation_matrix = []
+    
+    for i in range(num_features):
+        row = []
+        mean_i = calculate_mean(matrix[i])
+        variance_i = calculate_variance(matrix[i], mean_i)
+        
+        for j in range(num_features):
+            mean_j = calculate_mean(matrix[j])
+            variance_j = calculate_variance(matrix[j], mean_j)
+            
+            covariance = calculate_covariance(matrix[i], matrix[j], mean_i, mean_j)
+            correlation = covariance / math.sqrt(variance_i * variance_j)
+            row.append(correlation)
+        correlation_matrix.append(row)
+    
+    return correlation_matrix
+
+matrix = [
+    [2.0, 4.0, 6.0, 8.0],    # Feature 1 for 4 samples
+    [1.0, 3.0, 5.0, 7.0],    # Feature 2 for 4 samples
+    [9.0, 11.0, 13.0, 15.0]  # Feature 3 for 4 samples
+]
+covariance_matrix = calculate_covariance_matrix(matrix)
+correlation_matrix = calculate_correlation_matrix(matrix)
+
+# Output results
+print("Covariance Matrix:")
+for row in covariance_matrix:
+    print(row)
+
+print("\nCorrelation Matrix:")
+for row in correlation_matrix:
+    print(row)
